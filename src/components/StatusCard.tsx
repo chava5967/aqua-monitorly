@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { WaterParameter } from "@/utils/mockData";
-import * as Icons from "lucide-react";
+import { Activity, Eye, Thermometer, Droplet, Zap, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StatusCardProps {
@@ -10,12 +10,13 @@ interface StatusCardProps {
   delay?: number;
 }
 
-const iconMap: Record<string, keyof typeof Icons> = {
-  activity: "Activity",
-  eye: "Eye",
-  thermometer: "Thermometer",
-  droplet: "Droplet",
-  zap: "Zap",
+// Map parameter icon names to actual Lucide icon components
+const iconMap: Record<string, LucideIcon> = {
+  activity: Activity,
+  eye: Eye,
+  thermometer: Thermometer,
+  droplet: Droplet,
+  zap: Zap,
 };
 
 const StatusCard = ({ parameter, className, delay = 0 }: StatusCardProps) => {
@@ -31,7 +32,8 @@ const StatusCard = ({ parameter, className, delay = 0 }: StatusCardProps) => {
     return `${Math.max(0, Math.min(100, normalized * 100))}%`;
   };
 
-  const LucideIcon = Icons[iconMap[parameter.icon] as keyof typeof Icons];
+  // Get the appropriate icon component
+  const IconComponent = iconMap[parameter.icon];
 
   return (
     <motion.div
@@ -45,9 +47,9 @@ const StatusCard = ({ parameter, className, delay = 0 }: StatusCardProps) => {
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          {LucideIcon && (
+          {IconComponent && (
             <div className="w-8 h-8 rounded-full bg-aqua-100 flex items-center justify-center text-aqua-700">
-              <LucideIcon className="h-5 w-5" />
+              <IconComponent className="h-5 w-5" />
             </div>
           )}
           <h3 className="text-lg font-semibold">{parameter.name}</h3>
